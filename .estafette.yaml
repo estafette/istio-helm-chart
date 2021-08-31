@@ -19,26 +19,122 @@ stages:
     - curl -L https://istio.io/downloadIstio | ISTIO_VERSION=${ESTAFETTE_BUILD_VERSION} TARGET_ARCH=x86_64 sh -
     - mv istio-${ESTAFETTE_BUILD_VERSION}/manifests/charts charts
     - mv charts/gateways/* charts
+    - mv charts/istio-control/* charts
+    - mv charts/base charts/istio-base
 
-  build-lint-and-package:
+  lint-and-package:
     parallelStages:
-      lint-helm-chart:
+      lint-istio-base:
         image: extensions/helm:dev
         action: lint
+        chart: istio-base
 
-      package-helm-chart:
+      lint-istio-cni:
+        image: extensions/helm:dev
+        action: lint
+        chart: istio-cni
+
+      lint-istio-discovery:
+        image: extensions/helm:dev
+        action: lint
+        chart: istio-discovery
+
+      lint-istio-egress:
+        image: extensions/helm:dev
+        action: lint
+        chart: istio-egress
+
+      lint-istio-ingress:
+        image: extensions/helm:dev
+        action: lint
+        chart: istio-ingress
+
+      lint-istio-operator:
+        image: extensions/helm:dev
+        action: lint
+        chart: istio-operator
+
+      lint-istio-remote:
+        image: extensions/helm:dev
+        action: lint
+        chart: istio-remote
+
+      package-istio-base:
         image: extensions/helm:dev
         action: package
+        chart: istio-base
+
+      package-istio-cni:
+        image: extensions/helm:dev
+        action: package
+        chart: istio-cni
+
+      package-istio-discovery:
+        image: extensions/helm:dev
+        action: package
+        chart: istio-discovery
+
+      package-istio-egress:
+        image: extensions/helm:dev
+        action: package
+        chart: istio-egress
+
+      package-istio-ingress:
+        image: extensions/helm:dev
+        action: package
+        chart: istio-ingress
+
+      package-istio-operator:
+        image: extensions/helm:dev
+        action: package
+        chart: istio-operator
+
+      package-istio-remote:
+        image: extensions/helm:dev
+        action: package
+        chart: istio-remote
 
   clone-charts-repo:
     image: extensions/git-clone:dev
     repo: helm-charts
     branch: main
 
-  publish-helm-chart:
-    image: extensions/helm:dev
-    action: publish
-    repoBranch: main
+  publish:
+    parallelStages:
+      publish-istio-base:
+        image: extensions/helm:dev
+        action: publish
+        chart: istio-base
+
+      publish-istio-cni:
+        image: extensions/helm:dev
+        action: publish
+        chart: istio-cni
+
+      publish-istio-discovery:
+        image: extensions/helm:dev
+        action: publish
+        chart: istio-discovery
+
+      publish-istio-egress:
+        image: extensions/helm:dev
+        action: publish
+        chart: istio-egress
+
+      publish-istio-ingress:
+        image: extensions/helm:dev
+        action: publish
+        chart: istio-ingress
+
+      publish-istio-operator:
+        image: extensions/helm:dev
+        action: publish
+        chart: istio-operator
+
+      publish-istio-remote:
+        image: extensions/helm:dev
+        action: publish
+        chart: istio-remote
 
   create-github-release:
     image: extensions/github-release:dev
