@@ -17,25 +17,62 @@ helm repo update estafette
 helm search repo estafette
 ```
 
-Create a values file named *istio-base.yaml* with the following values:
-
-```yaml
-base:
-  enableCRDTemplates: true
-```
-
 From here on you can install or upgrade helm charts as follows
 
 ```bash
 kubectl create namespace istio-system
-helm upgrade --install istio-base estafette/istio-base --namespace istio-system --values istio-base.yaml --wait
+helm upgrade --install istio-base estafette/istio-base --namespace istio-system --wait
 helm upgrade --install istio-discovery estafette/istio-discovery --namespace istio-system --wait
 helm upgrade --install istio-ingress estafette/istio-ingress --namespace istio-system --wait
 helm upgrade --install istio-egress estafette/istio-egress --namespace istio-system --wait
 ```
 
 More details on installing and upgrading Istio using Helm can be found at:
+
 * https://istio.io/latest/docs/setup/install/helm/
 * https://istio.io/latest/docs/setup/upgrade/helm/
 
-Note: Handling CRDs via Helm is problematic. Read https://github.com/helm/community/blob/main/hips/hip-0011.md with more detail on edge cases that can cause trouble when managing CRDs using Helm.
+
+### CRDs
+
+With Helm 3 CRDs present in a directory _crds_ are automatically installed. See https://helm.sh/docs/topics/chart_best_practices/custom_resource_definitions/.
+
+When managing helm charts with [helmfile](https://github.com/roboll/helmfile) validation of `istio-discovery` can fail due to the CRDs in `istio-base` not being installed yet. To avoid this add `disableValidation: true` to the releases depending on those CRDs. The helmfile manifest would look something like this:
+
+```yaml
+helmDefaults:
+  wait: true
+  atomic: true
+  timeout: 120
+
+repositories:
+- name: estafette
+  url: https://helm.estafette.io
+
+releases:
+- name: istio-base
+  namespace: istio-system
+  chart: estafette/istio-base
+  version: 1.11.1
+- name: istio-discovery
+  namespace: istio-system
+  chart: estafette/istio-discovery
+  version: 1.11.1
+  disableValidation: true
+  needs:
+  - istio-system/istio-base
+- name: istio-ingress
+  namespace: istio-system
+  chart: estafette/istio-ingress
+  version: 1.11.1
+  disableValidation: true
+  needs:
+  - istio-system/istio-system
+- name: istio-egress
+  namespace: istio-system
+  chart: estafette/istio-egress
+  version: 1.11.1
+  disableValidation: true
+  needs:
+  - istio-system/istio-system
+```
