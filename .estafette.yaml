@@ -1,0 +1,45 @@
+builder:
+  track: dev
+
+labels:
+  team: estafette-team
+  language: helm
+
+version:
+  semver:
+    major: 1
+    minor: 11
+    patch: 1
+
+stages:
+  download-istio:
+    image: alpine:3.14
+    commands:
+    - apk add curl
+    - curl -L https://istio.io/downloadIstio | ISTIO_VERSION=${ESTAFETTE_BUILD_VERSION} TARGET_ARCH=x86_64 sh -
+    - mv istio-${ESTAFETTE_BUILD_VERSION}/manifests/charts charts
+    - mv charts/gateways/* charts
+
+  build-lint-and-package:
+    parallelStages:
+      lint-helm-chart:
+        image: extensions/helm:dev
+        action: lint
+
+      package-helm-chart:
+        image: extensions/helm:dev
+        action: package
+
+  clone-charts-repo:
+    image: extensions/git-clone:dev
+    repo: helm-charts
+    branch: main
+
+  publish-helm-chart:
+    image: extensions/helm:dev
+    action: publish
+    repoBranch: main
+
+  create-github-release:
+    image: extensions/github-release:dev
+    ignoreMissingMilestone: true
