@@ -109,36 +109,43 @@ stages:
   publish-istio-base:
     image: extensions/helm:dev
     action: publish
+    repoBranch: main
     chart: istio-base
 
   publish-istio-cni:
     image: extensions/helm:dev
     action: publish
+    repoBranch: main
     chart: istio-cni
 
   publish-istio-discovery:
     image: extensions/helm:dev
     action: publish
+    repoBranch: main
     chart: istio-discovery
 
   publish-istio-egress:
     image: extensions/helm:dev
     action: publish
+    repoBranch: main
     chart: istio-egress
 
   publish-istio-ingress:
     image: extensions/helm:dev
     action: publish
+    repoBranch: main
     chart: istio-ingress
 
   publish-istio-operator:
     image: extensions/helm:dev
     action: publish
+    repoBranch: main
     chart: istio-operator
 
   publish-istiod-remote:
     image: extensions/helm:dev
     action: publish
+    repoBranch: main
     chart: istiod-remote
 
   create-github-release:
