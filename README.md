@@ -17,11 +17,18 @@ helm repo update estafette
 helm search repo estafette
 ```
 
+Create a values file named *istio-base.yaml* with the following values:
+
+```yaml
+base:
+  enableCRDTemplates: true
+```
+
 From here on you can install or upgrade helm charts as follows
 
 ```bash
 kubectl create namespace istio-system
-helm upgrade --install istio-base estafette/istio-base --namespace istio-system --wait
+helm upgrade --install istio-base estafette/istio-base --namespace istio-system --values istio-base.yaml --wait
 helm upgrade --install istio-discovery estafette/istio-discovery --namespace istio-system --wait
 helm upgrade --install istio-ingress estafette/istio-ingress --namespace istio-system --wait
 helm upgrade --install istio-egress estafette/istio-egress --namespace istio-system --wait
@@ -30,3 +37,5 @@ helm upgrade --install istio-egress estafette/istio-egress --namespace istio-sys
 More details on installing and upgrading Istio using Helm can be found at:
 * https://istio.io/latest/docs/setup/install/helm/
 * https://istio.io/latest/docs/setup/upgrade/helm/
+
+Note: Handling CRDs via Helm is problematic. Read https://github.com/helm/community/blob/main/hips/hip-0011.md with more detail on edge cases that can cause trouble when managing CRDs using Helm.
