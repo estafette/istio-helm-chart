@@ -151,3 +151,8 @@ stages:
   create-github-release:
     image: extensions/github-release:dev
     ignoreMissingMilestone: true
+
+  cleanup:
+    image: alpine:3.14
+    commands:
+    - rm -rf istio-${ESTAFETTE_BUILD_VERSION} helm
