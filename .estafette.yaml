@@ -54,10 +54,10 @@ stages:
         action: lint
         chart: istio-operator
 
-      lint-istio-remote:
+      lint-istiod-remote:
         image: extensions/helm:dev
         action: lint
-        chart: istio-remote
+        chart: istiod-remote
 
       package-istio-base:
         image: extensions/helm:dev
@@ -89,10 +89,10 @@ stages:
         action: package
         chart: istio-operator
 
-      package-istio-remote:
+      package-istiod-remote:
         image: extensions/helm:dev
         action: package
-        chart: istio-remote
+        chart: istiod-remote
 
   clone-charts-repo:
     image: extensions/git-clone:dev
@@ -131,10 +131,10 @@ stages:
         action: publish
         chart: istio-operator
 
-      publish-istio-remote:
+      publish-istiod-remote:
         image: extensions/helm:dev
         action: publish
-        chart: istio-remote
+        chart: istiod-remote
 
   create-github-release:
     image: extensions/github-release:dev
