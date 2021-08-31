@@ -21,6 +21,8 @@ stages:
     - mv helm/gateways/* helm
     - mv helm/istio-control/* helm
     - mv helm/base helm/istio-base
+    - "sed -i 's/name: base/name: istio-base/' helm/istio-base/Chart.yaml"
+    - "sed -i 's/name: config/name: istiod-remote/' helm/istiod-remote/Chart.yaml"
 
   lint-and-package:
     parallelStages:
