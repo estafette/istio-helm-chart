@@ -17,10 +17,10 @@ stages:
     commands:
     - apk add curl
     - curl -L https://istio.io/downloadIstio | ISTIO_VERSION=${ESTAFETTE_BUILD_VERSION} TARGET_ARCH=x86_64 sh -
-    - mv istio-${ESTAFETTE_BUILD_VERSION}/manifests/charts charts
-    - mv charts/gateways/* charts
-    - mv charts/istio-control/* charts
-    - mv charts/base charts/istio-base
+    - mv istio-${ESTAFETTE_BUILD_VERSION}/manifests/charts helm
+    - mv helm/gateways/* helm
+    - mv helm/istio-control/* helm
+    - mv helm/base helm/istio-base
 
   lint-and-package:
     parallelStages:
