@@ -99,42 +99,40 @@ stages:
     repo: helm-charts
     branch: main
 
-  publish:
-    parallelStages:
-      publish-istio-base:
-        image: extensions/helm:dev
-        action: publish
-        chart: istio-base
+  publish-istio-base:
+    image: extensions/helm:dev
+    action: publish
+    chart: istio-base
 
-      publish-istio-cni:
-        image: extensions/helm:dev
-        action: publish
-        chart: istio-cni
+  publish-istio-cni:
+    image: extensions/helm:dev
+    action: publish
+    chart: istio-cni
 
-      publish-istio-discovery:
-        image: extensions/helm:dev
-        action: publish
-        chart: istio-discovery
+  publish-istio-discovery:
+    image: extensions/helm:dev
+    action: publish
+    chart: istio-discovery
 
-      publish-istio-egress:
-        image: extensions/helm:dev
-        action: publish
-        chart: istio-egress
+  publish-istio-egress:
+    image: extensions/helm:dev
+    action: publish
+    chart: istio-egress
 
-      publish-istio-ingress:
-        image: extensions/helm:dev
-        action: publish
-        chart: istio-ingress
+  publish-istio-ingress:
+    image: extensions/helm:dev
+    action: publish
+    chart: istio-ingress
 
-      publish-istio-operator:
-        image: extensions/helm:dev
-        action: publish
-        chart: istio-operator
+  publish-istio-operator:
+    image: extensions/helm:dev
+    action: publish
+    chart: istio-operator
 
-      publish-istiod-remote:
-        image: extensions/helm:dev
-        action: publish
-        chart: istiod-remote
+  publish-istiod-remote:
+    image: extensions/helm:dev
+    action: publish
+    chart: istiod-remote
 
   create-github-release:
     image: extensions/github-release:dev
