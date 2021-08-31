@@ -99,6 +99,11 @@ stages:
     repo: helm-charts
     branch: main
 
+  list-directory:
+    image: alpine:3.14
+    commands:
+    - ls -latr
+
   publish-istio-base:
     image: extensions/helm:dev
     action: publish
